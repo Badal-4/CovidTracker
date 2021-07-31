@@ -1,0 +1,81 @@
+public class covid19DataParser 
+{
+@AuraEnabled
+    public List<Cases_time_series>cases_time_series;
+    @AuraEnabled
+    public List<Key_values>key_values;
+    @AuraEnabled
+    public List<Statewise>statewise;
+    public class Key_values
+    {
+          @AuraEnabled
+        public string confirmedelta;
+          @AuraEnabled
+        public string counterforautotimeupdate;
+          @AuraEnabled
+        public string deceaseddelta;
+          @AuraEnabled
+        public string lastupdatedtime;
+          @AuraEnabled
+        public string recovereddelta;
+          @AuraEnabled
+        public string statesdelta;     
+    }
+    public class Delta
+    {
+          @AuraEnabled
+        public integer active;
+          @AuraEnabled
+        public integer confirmed;
+          @AuraEnabled
+        public integer deaths;
+          @AuraEnabled
+        public integer recovered;           
+    }
+    public class Statewise
+    {
+          @AuraEnabled
+        public string active;
+          @AuraEnabled
+        public string confirmed;
+          @AuraEnabled
+        public string deaths;
+          @AuraEnabled
+        public Delta delta;
+          @AuraEnabled
+        public string deltaconfirmed;
+          @AuraEnabled
+        public string deltadeaths;
+          @AuraEnabled
+        public string deltarecovered;
+          @AuraEnabled
+        public string lastupdatetime;
+          @AuraEnabled
+        public string recovered;
+          @AuraEnabled
+        public string state;
+          @AuraEnabled
+        public string statecode;
+    }
+    public class Cases_time_series
+    {
+          @AuraEnabled
+        public string dailyconfirmed;
+          @AuraEnabled
+        public string dailydeceased;
+          @AuraEnabled
+        public string dailyrecovered;
+          @AuraEnabled
+        public string date1;
+          @AuraEnabled
+        public string totalconfirmed;
+          @AuraEnabled
+        public string totaldeceased;
+          @AuraEnabled
+        public string totalrecovered;
+    }
+   public static covid19DataParser parse(string json)
+   {
+       return (covid19DataParser) System.JSON.deserialize(json,covid19DataParser.class);
+   }
+}

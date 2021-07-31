@@ -1,0 +1,62 @@
+({
+    COLUMNS:[
+        {label:'STATE',fieldName:'STATE',type:'text'},
+         {label:'CNFMD',fieldName:'CNFMD_CASES',type:'number',
+         cellAttributes:{alignment:'left'}},
+        {label:'ACTIVE',fieldName:'ACTIVE_CASE',type:'text'},
+         {label:'RCVRD',fieldName:'RCVRD_CASE',type:'text'},
+        {label:'DECEASED',fieldName:'DEATH',type:'text'}           
+    ],
+    DATA:[],
+    fetchData:function(component,event,helper)
+    {
+        var action=component.get("c.fetchCovid19Data");
+        action.setCallback(this,function(response)
+        {
+                           var state1=response.getState();
+        if(state1=='SUCCESS')
+        {
+            var result=JSON.parse(JSON.stringify(response.getReturnValue()));
+            component.set('v.columns',[
+                {label:'STATE',fieldName:'STATE',type:'text',wrapText:true},
+                {label:'CNFMD',fieldName:'CNFMD_CASE',type:'number',cellAttributes:{alignment:'left'}},
+                {label:'ACTIVE',fieldName:'ACTIVE_CASE',type:'text'},
+                {label:'RCVRD',fieldName:'RCVRD_CASE',type:'text'},
+                {label:'DECEASED',fieldName:'DEATH',type:'text'}
+            ]);
+                 component.set('v.confirmed',result.statewise[0].confirmed);
+                 component.set('v.active',result.statewise[0].active);
+                 component.set('v.recovered',result.statewise[0].recovered);
+                 component.set('v.deaths',result.statewise[0].deaths);
+                 var dataArry=new Array();
+                 for(var i=0;i<result.statewise.length;i++)
+                 {
+                 console.log('count>>'+i+' '+JSON.stringify(result.statewise[i].state));
+                 var fetchData={
+                 id:i,
+                 STATE:result.statewise[i].state,
+                 CNFMD_CASE:result.statewise[i].confirmed,
+                 ACTIVE_CASE:result.statewise[i].active,
+                 RCVRD_CASE:result.statewise[i].recovered,
+                 DEATH:result.statewise[i].deaths
+                };
+                dataArry.push(fetchData);
+                }
+                dataArry.shift();
+                console.log('data Array='+dataArry);
+                component.set('v.data',dataArry);
+                this.DATA=dataArry;                      
+                           }
+        
+});
+              $A.enqueueAction(action);
+},
+    setColumns:function(component)
+    {
+        component.set('v.columns',this.COLUMNS);
+    },
+    setData:function(component)
+    {
+        component.set('v.data',this.Data);
+    }
+})

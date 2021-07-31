@@ -1,0 +1,18 @@
+public class covid19_trackercontroller {
+    @AuraEnabled
+    public static covid19DataParser fetchCovid19Data()
+    {
+        string baseURL='https://api.covid19india.org/data.json';
+        HttpRequest request=new HttpRequest();
+        request.setEndpoint(baseURL);
+        request.setMethod('GET');
+        request.setHeader('Accept','application/json');
+        Http h=new Http();
+        HTTPResponse response=h.send(request);
+        system.debug('Response :'+response.getBody());
+        covid19DataParser prsr=covid19DataParser.parse(response.getBody());
+        system.debug('object='+prsr);
+        return prsr;
+    }
+
+}

@@ -1,0 +1,66 @@
+<aura:component controller="covid19_trackercontroller" implements="force.appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="total" type="string"/>
+    <aura:attribute name="confirmed" type="string"/>
+    <aura:attribute name="active" type="string"/>
+    <aura:attribute name="recovered" type="string"/>
+    <aura:attribute name="deaths" type="string"/>
+    <aura:attribute name="data" type="object"/>
+    <aura:attribute name="columns" type="list"/>
+    <aura:handler event="aura:waiting" action="{!c.showspinner}"/>
+    <aura:handler event="aura:donewaiting" action="{!c.hidespinner}"/>                                        
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="lastupdated" type="string"/>
+    <div class="slds-page-header">
+        <div class="slds-grid">
+            <div class="slds-col slds-size--7-of-12">
+                  <span style="font-size:22px;">COVID 19(State-Wise) Tracker</span>         
+            </div>
+            <div class="slds-col slds-size--4-of-12">
+     <span style="color:green;font-size:14px;font-style:bold;positionrelative;top:10px;"><!--Last Update:--><b>{!v.lastUpdated}</b></span>
+            </div>
+        <div class="slds-col slds-size--1-of-12">
+                <lightning:buttonIcon iconName="utility:refresh" size="large" variant="bare" onclick="{!doInit}" alternativeText="Refresh" title="Refresh"/>
+            </div>
+        </div>
+    </div>
+            <aura:if isTrue="{!v.Spinner}">
+                <div aura:id="spinnerId" class="slds-spinner_container">
+                    <div class="slds-spinner--brand slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+                </div>
+    </aura:if>
+    <lightning:tabset selectedTabId="one">
+        <lightning:tab label="LIVE DATA" id="one">
+            <div class="slds-grid">
+                <div class="slds-col slds-size--1-of-12" style="background-color:orange;">
+                    <span style="color:white;font-size:12px ;">States:</span>
+                </div>
+                
+                <div class="slds-col slds-size--3-of-12" style="background-color:red;padding:10px;">
+                    <span style="color:white;font-size:12px;">CONFIRMED:<b style="font-size:12px;">{!v.confirmed}</b></span>
+                </div>
+                <div class="slds-col slds-size--3-of-12" style="background-color:#009DDC;padding:10px;">                 
+                    <span style="color:white;font-size:12px;">ACTIVE:<b style="font-size:18px;">{!v.active}</b></span>
+                </div>
+                <div class="slds-col slds-size--3-of-12" style="background-color:green;padding:10px; text-align:center;">
+                    <span style="color:white;font-size:10px; hover{ font-size:15px;}">RECOVERED:<b style="font-size:12px;">{!v.recovered}</b></span>
+                </div>
+                <div class="slds-col slds-size--2-of-12" style="background-color:gray;padding:10px;">
+                <span style="color:white;font-size:14px;">DECEASED: <b style="font-size:18px;">{!v.deaths}</b></span>
+                </div>
+            </div>
+            <div style="height:100%;font-size:18px;padding:1%">
+                    <lightning:datatable 
+                                 keyField="id"
+                                 data="{!v.data}"
+                                 columns="{!v.columns}"
+                                 hideCheckboxColumn="true" >
+            </lightning:datatable>  
+            </div>
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>

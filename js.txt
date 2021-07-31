@@ -1,0 +1,15 @@
+({
+	doInit : function(component,event,helper) {
+		helper.fetchData(component,event,helper);
+        helper.setColumns(component);
+        helper.setData(component);
+	},
+    showspinner:function(component,event,helper)
+    {
+        component.set("v.spinner",true);
+    },
+    hidespinner:function(component,event,helper)
+    {
+        component.set("v.spinner",false);
+    }
+})
